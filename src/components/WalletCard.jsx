@@ -25,11 +25,11 @@ function WalletCard({
                     </div>
                 </div>
                 <div class="card-body">
-                    <p class=" d-flex justify-content-evenly ">
+                    <div class="icon-container">
                         <SendButton />
                         <ReceiveButton />
                         <ViewButton />
-                    </p>
+                    </div>
                 </div>
             </div>
         </div>)

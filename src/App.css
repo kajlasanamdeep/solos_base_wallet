@@ -156,3 +156,21 @@
 .wallet-card .card-text {
   color: #6c757d;
 }
+
+.icon-circle {
+  border: 1px solid #000;
+  border-radius: 50%;
+  padding: 10px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 10px;
+  cursor: pointer;
+}
+.icon-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
