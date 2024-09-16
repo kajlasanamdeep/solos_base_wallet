@@ -49,3 +49,18 @@ export const fireToast = (icon, title) => {
 export const fireSuccessToast = (title) => {
   fireToast("success", title);
 };
+
+export const fireTransactionSuccessSwal = (hash) => {
+  Swal.fire({
+    width: 350,
+    icon: 'success',
+    denyButtonText: `close`,
+    showCancelButton: false,
+    title: 'Transaction Successful',
+    confirmButtonText: 'View Transaction'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      window.open('https://sepolia.basescan.org/tx/' + hash, '_blank')
+    }
+  })
+}

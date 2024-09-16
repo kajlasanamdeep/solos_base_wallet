@@ -1,7 +1,7 @@
 import React from 'react'
 import { FaDownload } from "react-icons/fa";
 import ThirdwebButton from '../ThirdwebButton';
-import { RED_ADDRESS } from '../../client';
+import { USDC_ADDRESS } from '../../client';
 import { useActiveWalletChain } from 'thirdweb/react';
 
 function ReceiveRed() {
@@ -15,14 +15,14 @@ function ReceiveRed() {
                     </div>
                 }
                 displayBalanceToken={{
-                    [activeChain.id]: RED_ADDRESS[activeChain.id]
+                    [activeChain.id]: USDC_ADDRESS[activeChain.id]
                 }}
                 supportedTokens={{
                     [activeChain.id]: [{
-                        name: "Real Estate Dollar",
-                        symbol: "RED",
-                        icon: 'https://solo-s3-bucket.s3.amazonaws.com/8roecqudk0logo_Real.jpg',
-                        address: RED_ADDRESS[activeChain.id]
+                        name: "USD Coin",
+                        symbol: "USDC",
+                        icon: '/USDC.svg',
+                        address: USDC_ADDRESS[activeChain.id]
                     }]
                 }}
                 hideReceiveFunds={false}

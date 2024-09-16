@@ -117,60 +117,86 @@
   border: none;
   border-radius: 15px !important;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
   margin: auto;
   background-color: rgb(255, 255, 255) !important;
   border: 1px solid gray !important;
+  padding: 10px;
 }
 
-.wallet-card .card-img {
+.wallet-card .title-container{
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+.wallet-card .title-container .asset-img {
   border-radius: 50%;
-  max-width: 100px;
-  max-height: 100px;
+  width: 45px;
+  height: 45px;
 }
 
-.wallet-card .card-header {
-  background-color: transparent;
-  border-bottom: none;
-  text-align: center;
-  padding: 2rem;
-}
-
-.wallet-card .card-body {
-  background-color: transparent;
-  padding: 2rem;
-}
-
-.wallet-card .card-title {
+.wallet-card .title-container .asset-title {
   color: #2ca02c;
-  font-size: 1.5rem;
+  font-size: 0.8rem;
   font-weight: bold;
+  margin-bottom: 0;
 }
 
-.wallet-card .card-subtitle {
+.wallet-card .title-container .asset-subtitle {
   color: #2ca02c;
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: bold;
+  margin-bottom: 0;
 }
 
-.wallet-card .card-text {
+.wallet-card .title-container .asset-text {
   color: #6c757d;
+  font-size: 0.8rem;
+  margin-bottom: 0;
 }
 
 .icon-circle {
   border: 1px solid #000;
   border-radius: 50%;
-  padding: 10px;
-  width: 50px;
-  height: 50px;
+  padding: 8px;
+  color: #000;
+  width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 10px;
   cursor: pointer;
 }
+
 .icon-container {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  align-items: center;
+}
+
+
+.loading {
+  animation: rotateAnimation 2s linear infinite;
+}
+
+@keyframes rotateAnimation {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.nav-pills .nav-link {
+  border-radius: 50px;
+  color: black !important;
+}
+.nav-pills .nav-link.active {
+  background-color: #002855 !important;
+  color: white !important;
+}
+.nav-pills {
+  border: 1px solid #002855;
+  border-radius: 50px;
+}
+.nav-pills .nav-item {
+  padding: 1px;
 }
