@@ -12,9 +12,9 @@ export const wallets = [
   })
 ];
 export const RED_ADDRESS = {
-  80002: '',
+  80002: '0x447DE318489bd25D7c111Aa825eF6D2EE5763caC',
   84532: "0x7e9B896FF7b9D623B96443a89af5Ac9FecD1D8E2",
-  11155420: ''
+  11155420: '0xDF974F66eEAEeEB5d4E7F57a1573b6C8b93A26c5'
 }
 export const conversionRates = {
   80002: 0.38, // POL
