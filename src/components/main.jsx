@@ -8,7 +8,7 @@ function Main() {
         <div className="d-flex flex-column align-items-center w-full">
           <h1 className="fw-bold text-6xl text-center tracking-tight text-blck">
             Welcome to&nbsp;
-            <span class="bg-clip-text text-transparent">Base Wallet</span>
+            <span class="bg-clip-text text-transparent">Solos Wallet</span>
           </h1>
           <div className="mx-auto">
             <img
@@ -18,7 +18,7 @@ function Main() {
               height="320"
               decoding="async"
               data-nimg="1"
-              src="/Base.svg"
+              src="/logo.svg"
             />
           </div>
           <div className="max-w-xs">

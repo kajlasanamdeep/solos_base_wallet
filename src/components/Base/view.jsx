@@ -3,8 +3,8 @@ import { FaEye } from "react-icons/fa";
 import { useActiveAccount, useActiveWalletChain } from 'thirdweb/react';
 
 function View() {
-    const chain = useActiveWalletChain();
-    const ScanUrl = chain?.blockExplorers?.[0]?.url;
+    const activeChain = useActiveWalletChain();
+    const ScanUrl = activeChain?.blockExplorers?.[0]?.url;
     const activeAccount = useActiveAccount();
 
     return (

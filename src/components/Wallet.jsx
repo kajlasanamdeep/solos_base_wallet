@@ -14,11 +14,9 @@ import { FaCopy } from "react-icons/fa";
 import { useActiveAccount, useActiveWalletChain, useSwitchActiveWalletChain } from 'thirdweb/react';
 import { fireToast } from '../utils/toast';
 import { useNativeBalance, useRedBalance, useRedPrice, useUsdcBalance } from '../utils/hooks';
-import { conversionRates } from '../client';
-import { baseSepolia, optimismSepolia, polygonAmoy } from 'thirdweb/chains';
+import { chains, conversionRates } from '../config';
 import { ImSpinner9 } from 'react-icons/im';
 function Wallet() {
-    const chains = [baseSepolia, optimismSepolia, polygonAmoy]
     const activeChain = useActiveWalletChain();
     const switchChain = useSwitchActiveWalletChain();
     const ScanUrl = activeChain?.blockExplorers?.[0]?.url;

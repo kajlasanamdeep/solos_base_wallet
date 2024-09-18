@@ -1,5 +1,5 @@
 import { getContract, toTokens } from 'thirdweb';
-import { RED_ADDRESS, ThirdwebClient, USDC_ADDRESS } from '../client';
+import { RED_ADDRESS, ThirdwebClient, USDC_ADDRESS } from '../config';
 import { useReadContract, useWalletBalance } from 'thirdweb/react';
 
 export const useRedPrice = ({ chain }) => {

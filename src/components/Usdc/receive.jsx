@@ -1,7 +1,7 @@
 import React from 'react'
 import { FaDownload } from "react-icons/fa";
 import ThirdwebButton from '../ThirdwebButton';
-import { USDC_ADDRESS } from '../../client';
+import { USDC_ADDRESS } from '../../config';
 import { useActiveWalletChain } from 'thirdweb/react';
 
 function ReceiveRed() {

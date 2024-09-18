@@ -1,6 +1,5 @@
 import { ConnectButton } from "thirdweb/react";
-import { baseSepolia, optimismSepolia, polygonAmoy } from "thirdweb/chains";
-import { ThirdwebClient, wallets } from "../client";
+import { chains, defaultChain, ThirdwebClient, wallets } from "../config";
 
 
 
@@ -8,8 +7,8 @@ export default function ThirdwebButton({ CustomDetailsButton = undefined, suppor
   return (
     <>
       <ConnectButton
-        chain={baseSepolia}
-        chains={[baseSepolia, optimismSepolia, polygonAmoy]}
+        chain={defaultChain}
+        chains={chains}
         client={ThirdwebClient}
         wallets={wallets}
         theme={'light'}

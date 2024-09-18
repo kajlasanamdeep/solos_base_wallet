@@ -1,14 +1,14 @@
 import React from 'react'
 import { FaEye } from "react-icons/fa";
 import { useActiveAccount, useActiveWalletChain } from 'thirdweb/react';
-import { USDC_ADDRESS } from '../../client';
+import { USDC_ADDRESS } from '../../config';
 
 function ViewRed() {
-    const chain = useActiveWalletChain();
-    const ScanUrl = chain?.blockExplorers?.[0]?.url;
+    const activeChain = useActiveWalletChain();
+    const ScanUrl = activeChain?.blockExplorers?.[0]?.url;
 
     const activeAccount = useActiveAccount();
-    const viewTransactionsUrl = `${ScanUrl}/token/${USDC_ADDRESS[chain.id]}?a=${activeAccount?.address}`;
+    const viewTransactionsUrl = `${ScanUrl}/token/${USDC_ADDRESS[activeChain.id]}?a=${activeAccount?.address}`;
 
     return (
         <>
