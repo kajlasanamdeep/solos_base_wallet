@@ -1,11 +1,10 @@
 import { createThirdwebClient } from "thirdweb";
-import { base, baseSepolia, optimism, optimismSepolia, polygon, polygonAmoy } from "thirdweb/chains";
+import { polygon, polygonAmoy } from "thirdweb/chains";
 import { inAppWallet } from "thirdweb/wallets";
-const mode = "MAINNET";
+const mode = "TESTNET";
 export const ThirdwebClient = createThirdwebClient({
   clientId: '6140fc51b8607086b797815a1ae9c42f'
 });
-
 export const wallets = [
   inAppWallet({
     auth: {
@@ -13,48 +12,93 @@ export const wallets = [
     }
   })
 ];
+const logo_base_url = 'https://solo-s3-bucket.s3.amazonaws.com';
+export const supportedTokens = [
+  {
+    icon: `${logo_base_url}/8roecqudk0logo_Real.jpg`,
+    address: mode === 'TESTNET' ? '0x17f15959871842b8B424dd75FCa66CF27Cd433B5' : '',
+    name: 'Real Estate Dollars',
+    symbol: 'RED'
+  },
+  {
+    icon: `${logo_base_url}/jz7hue1agwlogo_Reward.jpg`,
+    address: mode === 'TESTNET' ? '0xd74BDB1768aA70fdF8Ec8F21e99C389fca4ec8bB' : '',
+    name: 'Solos Rewards',
+    symbol: 'SR'
+  },
+  {
+    icon: `${logo_base_url}/jz7hue1agwlogo_Reward.jpg`,
+    address: mode === 'TESTNET' ? '0x4502282d83462cB59C2659FF4Ba26E4047a3D8Ec' : '',
+    name: 'Transaction Verify Token',
+    symbol: 'TVT'
+  }
+]
+export const chains = mode === 'TESTNET' ? [polygonAmoy] : [polygon];
+export const defaultChain = mode === 'TESTNET' ? polygonAmoy : polygon;
+export const TREASURY_ADDRESS = '0x9F2985565E358F8579befAd1474A74E090Ffb0AD';
+export const API_URL = 'http://localhost:8003/api';
 
-export const RED_ADDRESS = {
-
-  // MAINNET ADDRESSES
-  8453: "0xfdb7Ad5111389007f2b5786368510c0fAA6425a5", // Base ETH
-  10: '0x8acdE96B9Ab7289946E99535399a74fc614De807', // OP ETH
-  137: '0xBd9127E8843adA70042D17D90D581743AB81a927', // POL MATIC
-
-  // TESTNET ADDRESSES
-  84532: "0x7e9B896FF7b9D623B96443a89af5Ac9FecD1D8E2", // BASE SEPOLIA
-  11155420: '0xDF974F66eEAEeEB5d4E7F57a1573b6C8b93A26c5', // OP SEPOLIA
-  80002: '0x447DE318489bd25D7c111Aa825eF6D2EE5763caC', // POL AMOY
-
-}
-
-export const conversionRates = {
-
-  // MAINNET 
-  8453: 2400, // Base ETH
-  10: 2400, // OP ETH
-  137: 0.39, // POL MATIC
-
-  // TESTNET
-  84532: 2400, // BASE SEPOLIA
-  11155420: 2400, // OP SEPOLIA
-  80002: 0.39, // POL AMOY
-
-}
-
-export const USDC_ADDRESS = {
-
-  // MAINNET ADDRESSES
-  8453: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913", // Base ETH
-  10: '0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85', // OP ETH
-  137: '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359', // POL MATIC
-
-  // TESTNET ADDRESSES
-  84532: "0x036CbD53842c5426634e7929541eC2318f3dCF7e", // BASE SEPOLIA
-  11155420: '0x5fd84259d66Cd46123540766Be93DFE6D43130D7', // OP SEPOLIA
-  80002: '0x41e94eb019c0762f9bfcf9fb1e58725bfb0e7582', // POL AMOY
-
-}
-
-export const chains = mode === 'TESTNET' ? [baseSepolia, optimismSepolia, polygonAmoy] : [base, optimism, polygon]
-export const defaultChain = mode === 'TESTNET' ? baseSepolia : base
+export const PermitAbi = [
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      }
+    ],
+    "name": "nonces",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "deadline",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "v",
+        "type": "uint8"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "r",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "s",
+        "type": "bytes32"
+      }
+    ],
+    "name": "transferWithPermit",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+];

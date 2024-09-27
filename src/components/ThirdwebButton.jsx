@@ -1,9 +1,9 @@
 import { ConnectButton } from "thirdweb/react";
-import { chains, defaultChain, ThirdwebClient, wallets } from "../config";
+import { chains, defaultChain, supportedTokens, ThirdwebClient, wallets } from "../config";
 
 
 
-export default function ThirdwebButton({ CustomDetailsButton = undefined, supportedTokens = undefined, displayBalanceToken = undefined, hideReceiveFunds = true, hideSendFunds = true }) {
+export default function ThirdwebButton({ CustomDetailsButton = undefined, displayBalanceToken = undefined, hideReceiveFunds = true, hideSendFunds = true }) {
   return (
     <>
       <ConnectButton
@@ -12,7 +12,9 @@ export default function ThirdwebButton({ CustomDetailsButton = undefined, suppor
         client={ThirdwebClient}
         wallets={wallets}
         theme={'light'}
-        supportedTokens={supportedTokens}
+        supportedTokens={{
+          [defaultChain.id]: supportedTokens
+        }}
         connectButton={{
           label: "Create Wallet",
           className: "create-wallet-button",

@@ -1,20 +1,34 @@
 import React, { useState } from 'react';
-import { prepareTransaction, sendAndConfirmTransaction, toWei, isAddress } from "thirdweb";
-import { baseSepolia } from "thirdweb/chains";
+import { isAddress } from "thirdweb";
 import { Button, Form, InputGroup, FormControl, Modal } from 'react-bootstrap';
-import { ThirdwebClient } from '../client';
+import { defaultChain, PermitAbi, TREASURY_ADDRESS } from '../config';
 import { useActiveAccount } from 'thirdweb/react';
 import { ImSpinner9 } from "react-icons/im";
-import { fireToast, fireTransactionSuccessSwal } from '../utils/toast';
+import { fireToast, fireTransactionSuccessSwal } from '../Utils/Toast';
+const ethers = require('ethers');
 const SendFundsModal = ({
-    logo,
-    name,
+    tokenToSend,
     show,
-    symbol,
-    balance,
     onHide
 }) => {
-    const account = useActiveAccount();
+    const wallet = useActiveAccount();
+
+    const domain = {
+        name: tokenToSend?.name,  // Token name
+        version: "1",
+        chainId: defaultChain.id,
+        verifyingContract: tokenToSend?.tokenAddress
+    };
+    const types = {
+        Permit: [
+            { name: "owner", type: "address" },
+            { name: "spender", type: "address" },
+            { name: "value", type: "uint256" },
+            { name: "nonce", type: "uint256" },
+            { name: "deadline", type: "uint256" },
+        ],
+    };
+
     const [sending, setSending] = useState(false);
     const [recipient, setRecipient] = useState('');
     const [amount, setAmount] = useState(0);
@@ -29,32 +43,69 @@ const SendFundsModal = ({
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        if (+amount > +balance) {
-            fireToast('error', 'Insufficient funds !')
-            return;
-        }
-        setSending(true);
-        console.log(`Amount: ${amount}`);
-        console.log(`Recipient: ${recipient}`);
-        const transaction = prepareTransaction({
-            to: recipient,
-            chain: baseSepolia,
-            client: ThirdwebClient,
-            value: toWei(Number(amount).toString()),
-        });
-        sendAndConfirmTransaction({
-            account,
-            transaction,
-        }).then((transactionReceipt) => {
-            console.log('Send funds transaction receipt : ', transactionReceipt);
+        try {
+            if (+amount > +tokenToSend?.balance) {
+                fireToast('error', 'Insufficient funds !')
+                return;
+            }
+            setSending(true);
+            console.log(`Amount: ${amount}`);
+            console.log(`Recipient: ${recipient}`);
+            console.log('REACT_APP_PRIVATE_KEY',process.env.REACT_APP_PRIVATE_KEY);
+
+            const provider = new ethers.JsonRpcProvider(defaultChain?.rpc);
+            const treasurySigner = new ethers.Wallet(process.env.REACT_APP_PRIVATE_KEY, provider);
+            const tokenContract = new ethers.Contract(tokenToSend?.tokenAddress, PermitAbi, treasurySigner);
+            const nonce = await tokenContract.nonces(wallet?.address);
+
+            const currentTime = Math.floor(Date.now() / 1000);
+            const validityPeriod = 10 * 60;  // 10 min in seconds
+            const deadlineTimestamp = currentTime + validityPeriod;
+            const value = {
+                owner: wallet?.address,    // User's address
+                spender: TREASURY_ADDRESS, // Relayer's address (or the app's)
+                value: ethers.parseUnits(Number(amount).toString(), 18).toString(),// Amount for the approval
+                nonce: nonce,            // Nonce for the owner
+                deadline: deadlineTimestamp, // Unix timestamp for the deadline
+            };
+            const signature = await wallet.signTypedData({ types, primaryType: 'Permit', domain, message: value });
+            const splitSignature = ethers.Signature.from(signature)
+            const { v, r, s } = splitSignature;
+            const tx = await tokenContract.transferWithPermit(
+                wallet?.address,
+                recipient,
+                value.value,
+                deadlineTimestamp,
+                v,
+                r,
+                s
+            )
+            // sendAndConfirmTransaction({
+            //     signature,
+            //     toAddress: recipient,
+            //     fromAddress: wallet?.address,
+            //     value: Number(amount).toString(),
+            //     tokenAddress: tokenToSend?.tokenAddress,
+            //     deadline: deadlineTimestamp
+            // })
+            tx.wait()
+                .then((receipt) => {
+                    // console.log('Send funds transaction receipt : ', response?.data?.data);
+                    console.log('Send funds transaction receipt : ', receipt);
+                    setSending(false);
+                    onHide();
+                    // fireTransactionSuccessSwal(response?.data?.data?.transactionHash);
+                    fireTransactionSuccessSwal(receipt?.hash);
+                }).catch((error) => {
+                    console.log('Send funds transaction error : ', error);
+                    setSending(false);
+                    fireToast('error', 'Transaction Failed due to some reasons !')
+                });
+        } catch (error) {
             setSending(false);
-            onHide();
-            fireTransactionSuccessSwal(transactionReceipt?.transactionHash);
-        }).catch((error) => {
-            console.log('Send funds transaction error : ', error);
-            setSending(false);
+            console.log(error);
             fireToast('error', 'Transaction Failed due to some reasons !')
-        });
+        }
     };
 
     return (
@@ -78,15 +129,15 @@ const SendFundsModal = ({
                     <Form.Group className="mb-3">
                         <Form.Label>Token</Form.Label>
                         <div class="d-flex gap-2 align-items-center rounded-2 px-2 py-1 cursor-pointer" style={{ border: "1px solid #dee2e6" }}>
-                            <img class="img-fluid rounded-5" height={30} width={30} src={logo}
+                            <img class="img-fluid rounded-5" height={30} width={30} src={tokenToSend?.icon}
                                 alt="" />
                             <div>
                                 <div className="" style={{ fontSize: "12px" }}
                                 >
-                                    {name}
+                                    {tokenToSend?.name}
                                 </div>
                                 <div className="" style={{ fontSize: "12px" }}>
-                                    {+balance > 0 ? Number(balance).toFixed(3) : 0} {symbol}
+                                    {+tokenToSend?.balance >= 0 ? Number(tokenToSend?.balance).toFixed(3) : 0} {tokenToSend?.symbol}
                                 </div>
                             </div>
                         </div>
@@ -113,7 +164,7 @@ const SendFundsModal = ({
                                 onChange={handleAmountChange}
                             />
                             <InputGroup.Text className="border-0 bg-transparent text-gray">
-                                {symbol}
+                                {tokenToSend?.symbol}
                             </InputGroup.Text>
                         </InputGroup>
                         <Form.Text className='text-danger'>{amount?.toString()?.length && +amount <= 0 ? <>Please enter valid amount to send.</> : null}</Form.Text>

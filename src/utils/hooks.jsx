@@ -1,48 +1,26 @@
 import { getContract, toTokens } from 'thirdweb';
-import { RED_ADDRESS, ThirdwebClient, USDC_ADDRESS } from '../config';
-import { useReadContract, useWalletBalance } from 'thirdweb/react';
-
-export const useRedPrice = ({ chain }) => {
-    const contract = getContract({
-        chain,
+import { defaultChain, ThirdwebClient } from '../config';
+import { useActiveAccount, useReadContract, useWalletBalance } from 'thirdweb/react';
+export const useCustomTokenBalance = ({ tokenAddress }) => {
+    const activeAccount = useActiveAccount();
+    const { data, isLoading, refetch:refetchBalance, isRefetching } = useWalletBalance({
+        chain: defaultChain,
+        address: activeAccount?.address,
         client: ThirdwebClient,
-        address: RED_ADDRESS[chain?.id],
+        tokenAddress: tokenAddress,
     });
-    const { data, isLoading } = useReadContract({
+    const contract = getContract({
+        chain: defaultChain,
+        client: ThirdwebClient,
+        address: tokenAddress,
+    });
+    const { data: price, isLoading: isLoadingPrice, refetch: refetchPrice, isRefetching:isRefetchingPrice } = useReadContract({
         method: "function getPrice() external view returns (uint256)",
         contract
     });
-
-    return { redPrice: data && toTokens(data, 18), redPriceLoading: isLoading }
-}
-
-export const useNativeBalance = ({ chain, address }) => {
-    const { data, isLoading } = useWalletBalance({
-        chain,
-        address,
-        client: ThirdwebClient,
-    });
-
-    return { nativeBalance: data, isLoading }
-}
-
-export const useRedBalance = ({ chain, address }) => {
-    const { data, isLoading } = useWalletBalance({
-        chain,
-        address,
-        client: ThirdwebClient,
-        tokenAddress: RED_ADDRESS[chain?.id],
-    });
-
-    return { redBalance: data, redBalanceLoading: isLoading }
-};
-export const useUsdcBalance = ({ chain, address }) => {
-    const { data, isLoading } = useWalletBalance({
-        chain,
-        address,
-        client: ThirdwebClient,
-        tokenAddress: USDC_ADDRESS[chain?.id],
-    });
-
-    return { usdcBalance: data, usdcBalanceLoading: isLoading }
+    function refetch() {
+        refetchPrice();
+        refetchBalance();
+    }
+    return { balance: data, price: price && data ? toTokens(price, data?.decimals) : 0, isLoading: isLoading || isLoadingPrice || isRefetchingPrice || isRefetching, refetch }
 };

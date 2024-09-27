@@ -1,5 +1,4 @@
 import React from 'react'
-// import ImportWalletButton from './ImportWalletButton'
 import ThirdwebButton from './ThirdwebButton';
 
 function Main() {
@@ -25,9 +24,6 @@ function Main() {
             <div className="my-1">
               <ThirdwebButton />
             </div>
-            {/* <div className="my-1">
-              <ImportWalletButton />
-            </div> */}
           </div>
         </div>
       </div>

@@ -121,13 +121,15 @@
   background-color: rgb(255, 255, 255) !important;
   border: 1px solid gray !important;
   padding: 10px;
+  min-height: 68px;
 }
 
-.wallet-card .title-container{
+.wallet-card .title-container {
   align-items: center;
   display: flex;
   gap: 10px;
 }
+
 .wallet-card .title-container .asset-img {
   border-radius: 50%;
   width: 45px;
@@ -189,14 +191,17 @@
   border-radius: 50px;
   color: black !important;
 }
+
 .nav-pills .nav-link.active {
   background-color: #002855 !important;
   color: white !important;
 }
+
 .nav-pills {
   border: 1px solid #002855;
   border-radius: 50px;
 }
+
 .nav-pills .nav-item {
   padding: 1px;
 }

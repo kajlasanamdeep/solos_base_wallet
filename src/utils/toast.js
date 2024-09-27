@@ -1,4 +1,5 @@
 import Swal from "sweetalert2";
+import { defaultChain } from "../config";
 
 export const toastConfig = () => {
   return Swal.mixin({
@@ -21,7 +22,7 @@ export const toastConfig = () => {
   });
 };
 
-export const toastConfirm = (text, subText, html = "") => {
+export const toastConfirm = (text, subText, html = "", width) => {
   return Swal.mixin({
     title: text ? text : "Are you sure?",
     text: subText ? subText : "You wanna proceed?",
@@ -31,11 +32,13 @@ export const toastConfirm = (text, subText, html = "") => {
     },
     showCancelButton: true,
     confirmButtonText: "Yes",
-    denyButtonText: "No",
+    cancelButtonText: "No",
+    // denyButtonText: "No",
     didOpen: (toast) => {
       toast.addEventListener("mouseenter", Swal.stopTimer);
       toast.addEventListener("mouseleave", Swal.resumeTimer);
     },
+    width
   });
 };
 
@@ -60,7 +63,7 @@ export const fireTransactionSuccessSwal = (hash) => {
     confirmButtonText: 'View Transaction'
   }).then((result) => {
     if (result.isConfirmed) {
-      window.open('https://sepolia.basescan.org/tx/' + hash, '_blank')
+      window.open(defaultChain?.blockExplorers?.[0].url + '/tx/' + hash, '_blank')
     }
   })
 }

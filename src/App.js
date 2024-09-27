@@ -1,9 +1,9 @@
 import './App.css';
-import Footer from './components/footer';
-import Header from './components/header';
-import Main from './components/main';
+import Footer from './Components/Footer';
+import Header from './Components/Header';
+import Main from './Components/Main';
 import { useActiveAccount } from "thirdweb/react";
-import Wallet from './components/Wallet';
+import Wallet from './Components/Wallet';
 
 function App() {
   const activeAccount = useActiveAccount();
